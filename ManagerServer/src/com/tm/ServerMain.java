@@ -16,11 +16,21 @@ public class ServerMain {
                 System.out.println("Going to accept client connection just now");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Accepted connection from " + clientSocket);
-                handleClientSocket(clientSocket);
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            handleClientSocket(clientSocket);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                t.start();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
