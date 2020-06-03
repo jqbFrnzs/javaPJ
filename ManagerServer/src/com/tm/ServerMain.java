@@ -1,26 +1,10 @@
 package com.tm;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-
 public class ServerMain {
-    public static void main(String[] args) throws IOException {
-     int port = 8818;
-        ServerSocket serverSocket = new ServerSocket(port);
-        try {
-            while (true) {
-                System.out.println("Going to accept client connection just now");
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Accepted connection from " + clientSocket);
-                ServerWorker worker = new ServerWorker(clientSocket);
-                worker.start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) {
+        int port = 8818;
+        Server server = new Server(port);
+        server.start();
     }
-
 
 }
