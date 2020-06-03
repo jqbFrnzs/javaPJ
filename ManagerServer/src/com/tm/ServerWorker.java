@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ServerWorker extends Thread{
 
     private final Socket clientSocket;
+    private String login = null;
 
     public ServerWorker(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -53,6 +54,8 @@ public class ServerWorker extends Thread{
             if(login.equals("guest") && password.equals("guest")) {
                 String msg = "ok, logging you in...\n";
                 outputStream.write(msg.getBytes());
+                this.login = login;
+                System.out.println(login + " logged in just now!");
             } else {
                 String msg = "error, cannot logging you in...\n";
                 outputStream.write(msg.getBytes());
