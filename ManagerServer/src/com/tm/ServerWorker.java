@@ -34,6 +34,8 @@ public class ServerWorker extends Thread{
                 String cmd = tokens[0];
                 if ("quit".equalsIgnoreCase(cmd)) {
                     break;
+                } else if ("login".equalsIgnoreCase(cmd)) {
+                    handleLogin(outputStream, tokens);
                 } else {
                     String msg = "unknown " + cmd + "\n";
                     outputStream.write(msg.getBytes());
@@ -41,5 +43,20 @@ public class ServerWorker extends Thread{
             }
         }
         clientSocket.close();
+    }
+
+    private void handleLogin(OutputStream outputStream, String[] tokens) throws IOException {
+        if (tokens.length == 3) {
+            String login = tokens[1];
+            String password = tokens[2];
+
+            if(login.equals("guest") && password.equals("guest")) {
+                String msg = "ok, logging you in...\n";
+                outputStream.write(msg.getBytes());
+            } else {
+                String msg = "error, cannot logging you in...\n";
+                outputStream.write(msg.getBytes());
+            }
+        }
     }
 }
