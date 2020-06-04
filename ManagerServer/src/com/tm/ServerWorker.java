@@ -66,8 +66,16 @@ public class ServerWorker extends Thread{
                 this.login = login;
                 System.out.println(login + " logged in just now!");
 
-                String onlineMsg = login + " is now online!\n";
+
                 List<ServerWorker> workerList = server.getWorkerList();
+                // send current user all other online logins
+                for(ServerWorker worker : workerList) {
+                    String onlineBefore = worker.getLogin() + " is now online!\n";
+                    send(onlineBefore);
+                }
+
+                String onlineMsg = login + " is now online!\n";
+                // send other online users current user's status
                 for(ServerWorker worker : workerList) {
                     worker.send(onlineMsg);
                 }
