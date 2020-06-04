@@ -70,14 +70,22 @@ public class ServerWorker extends Thread{
                 List<ServerWorker> workerList = server.getWorkerList();
                 // send current user all other online logins
                 for(ServerWorker worker : workerList) {
-                    String onlineBefore = worker.getLogin() + " is now online!\n";
-                    send(onlineBefore);
+                    // do not send ONLINE message when clientSocket is not logged in
+                    if (worker.getLogin() != null) {
+                        if (!login.equals(worker.getLogin())) {
+                            String onlineBefore = worker.getLogin() + " is now online!\n";
+                            send(onlineBefore);
+                        }
+                    }
                 }
 
                 String onlineMsg = login + " is now online!\n";
                 // send other online users current user's status
                 for(ServerWorker worker : workerList) {
-                    worker.send(onlineMsg);
+                    // do not send ONLINE message to oneself
+                    if (!login.equals(worker.getLogin())) {
+                        worker.send(onlineMsg);
+                    }
                 }
 
             } else {
@@ -88,6 +96,9 @@ public class ServerWorker extends Thread{
     }
 
     private void send(String msg) throws IOException {
-        outputStream.write(msg.getBytes());
+        if (login != null) {
+            // do not send ONLINE message if clientSocket is opened but user not connected
+            outputStream.write(msg.getBytes());
+        }
     }
 }
