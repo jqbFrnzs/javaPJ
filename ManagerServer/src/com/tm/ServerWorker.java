@@ -11,6 +11,7 @@ public class ServerWorker extends Thread{
     private final Socket clientSocket;
     private final Server server;
     private String login = null;
+    private OutputStream outputStream;
 
     public ServerWorker(Server server, Socket clientSocket) {
         this.server = server;
@@ -29,7 +30,7 @@ public class ServerWorker extends Thread{
     }
     private void handleClientSocket() throws IOException, InterruptedException {
         InputStream inputStream = clientSocket.getInputStream();
-        OutputStream outputStream = clientSocket.getOutputStream();
+        this.outputStream = clientSocket.getOutputStream();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
@@ -64,10 +65,21 @@ public class ServerWorker extends Thread{
                 outputStream.write(msg.getBytes());
                 this.login = login;
                 System.out.println(login + " logged in just now!");
+
+                String onlineMsg = login + " is now online!\n";
+                List<ServerWorker> workerList = server.getWorkerList();
+                for(ServerWorker worker : workerList) {
+                    worker.send(onlineMsg);
+                }
+
             } else {
                 String msg = "error, cannot logging you in...\n";
                 outputStream.write(msg.getBytes());
             }
         }
+    }
+
+    private void send(String msg) throws IOException {
+        outputStream.write(msg.getBytes());
     }
 }
