@@ -2,6 +2,8 @@ package com.tm;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class ServerWorker extends Thread{
@@ -46,6 +48,10 @@ public class ServerWorker extends Thread{
             }
         }
         clientSocket.close();
+    }
+
+    public String getLogin() {
+        return login;
     }
 
     private void handleLogin(OutputStream outputStream, String[] tokens) throws IOException {
