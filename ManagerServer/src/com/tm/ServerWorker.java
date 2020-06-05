@@ -43,6 +43,10 @@ public class ServerWorker extends Thread{
                     break;
                 } else if ("login".equalsIgnoreCase(cmd)) {
                     handleLogin(outputStream, tokens);
+                } else if ("msg".equalsIgnoreCase(cmd)) {
+                    // split ONLY 3 tokens so you can send space-separated messages (user-user)
+                    String[] tokensMsg = StringUtils.split(line, null, 3);
+                    handleMessage(tokensMsg);
                 } else {
                     String msg = "unknown " + cmd + "\n";
                     outputStream.write(msg.getBytes());
@@ -50,6 +54,19 @@ public class ServerWorker extends Thread{
             }
         }
         clientSocket.close();
+    }
+    // format: "msg" "login" body . . .
+    private void handleMessage(String[] tokens) throws IOException {
+        String sendTo = tokens[1];
+        String body = tokens[2];
+
+        List<ServerWorker> workerList = server.getWorkerList();
+        for (ServerWorker worker : workerList) {
+            if (sendTo.equalsIgnoreCase(worker.getLogin())) {
+                String outMsg = "/msg/ FROM " + login + " : " + body + "\n";
+                worker.send(outMsg);
+            }
+        }
     }
 
     private void handleLogoff() throws IOException {
