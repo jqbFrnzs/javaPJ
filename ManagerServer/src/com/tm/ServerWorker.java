@@ -51,13 +51,22 @@ public class ServerWorker extends Thread{
                     handleMessage(tokensMsg);
                 } else if ("join".equalsIgnoreCase(cmd)) {
                     handleJoin(tokens);
-                }else {
+                } else if ("leave".equalsIgnoreCase(cmd)) {
+                    handleLeave(tokens);
+                } else {
                     String msg = "unknown " + cmd + "\n";
                     outputStream.write(msg.getBytes());
                 }
             }
         }
         clientSocket.close();
+    }
+    // function handles user's topic leaving
+    private void handleLeave(String[] tokens) {
+        if (tokens.length > 1) {
+            String topic = tokens[1];
+            topicSet.remove(topic);
+        }
     }
 
     public boolean isMemberOfTopic(String topic) {
@@ -127,7 +136,6 @@ public class ServerWorker extends Thread{
                 outputStream.write(msg.getBytes());
                 this.login = login;
                 System.out.println(login + " logged in just now!");
-
 
                 List<ServerWorker> workerList = server.getWorkerList();
                 // send current user all other online logins
