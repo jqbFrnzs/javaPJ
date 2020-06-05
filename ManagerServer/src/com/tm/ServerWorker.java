@@ -86,7 +86,7 @@ public class ServerWorker extends Thread{
             // sends broadcast message if user is member of certain #topic
             if (isTopic) {
                 if(worker.isMemberOfTopic(sendTo)) {
-                    String outMsg = "/msg/ FROM " + login + " : " + body + "\n";
+                    String outMsg = "/msg/ FROM " + sendTo + " , " + login + " : " + body + "\n";
                     worker.send(outMsg);
                 }
             } else {
