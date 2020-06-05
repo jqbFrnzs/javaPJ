@@ -38,7 +38,8 @@ public class ServerWorker extends Thread{
             String[] tokens = StringUtils.split(line);
             if (tokens !=null && tokens.length > 0) {
                 String cmd = tokens[0];
-                if ("quit".equalsIgnoreCase(cmd)) {
+                if ("logoff".equals(cmd) || "quit".equalsIgnoreCase(cmd)) {
+                    handleLogoff();
                     break;
                 } else if ("login".equalsIgnoreCase(cmd)) {
                     handleLogin(outputStream, tokens);
@@ -46,6 +47,20 @@ public class ServerWorker extends Thread{
                     String msg = "unknown " + cmd + "\n";
                     outputStream.write(msg.getBytes());
                 }
+            }
+        }
+        clientSocket.close();
+    }
+
+    private void handleLogoff() throws IOException {
+        List<ServerWorker> workerList = server.getWorkerList();
+
+        String onlineMsg = login + " is now offline!\n";
+        // send other online users current user's status
+        for(ServerWorker worker : workerList) {
+            // do not send ONLINE message to oneself
+            if (!login.equals(worker.getLogin())) {
+                worker.send(onlineMsg);
             }
         }
         clientSocket.close();
@@ -87,7 +102,6 @@ public class ServerWorker extends Thread{
                         worker.send(onlineMsg);
                     }
                 }
-
             } else {
                 String msg = "error, cannot logging you in...\n";
                 outputStream.write(msg.getBytes());
