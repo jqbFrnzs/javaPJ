@@ -160,8 +160,9 @@ public class ServerWorker extends Thread{
                     }
                 }
             } else {
-                String msg = "error, cannot logging you in...\n";
+                String msg = "error, cannot log you in...\n";
                 outputStream.write(msg.getBytes());
+                System.err.println("Cannot log in " + login);
             }
         }
     }
