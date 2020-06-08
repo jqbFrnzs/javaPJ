@@ -17,13 +17,19 @@ public class ManagerClient {
         this.serverPort = serverPort;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ManagerClient client = new ManagerClient("localhost", 8818);
         if(!client.connect()) {
             System.out.println("Connection failed");
         } else {
             System.out.println("connection successful");
+            client.login("guest", "guest");
         }
+    }
+
+    private void login(String login, String password) throws IOException {
+        String cmd = "login " + login + " " + password + "\n";
+        serverOut.write(cmd.getBytes());
     }
 
     private boolean connect() {
