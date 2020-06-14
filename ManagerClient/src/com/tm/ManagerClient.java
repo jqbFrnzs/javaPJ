@@ -24,13 +24,12 @@ public class ManagerClient {
     }
 
     public static void main(String[] args) throws IOException {
-        ManagerClient client = new ManagerClient("localhost", 8818);
+        ManagerClient client = new ManagerClient("localhost", 8819);
         client.addUserStatusListener(new UserStatusListener() {
             @Override
             public void online(String login) {
                 System.out.println("ONLINE: " + login);
             }
-
             @Override
             public void offline(String login) {
                 System.out.println("OFFLINE: " + login);
@@ -45,6 +44,8 @@ public class ManagerClient {
             } else {
                 System.err.println("Login failed");
            }
+
+            client.logoff();
         }
     }
 
@@ -63,7 +64,11 @@ public class ManagerClient {
         } else {
             return false;
         }
+    }
 
+    private void logoff() throws IOException {
+        String cmd = "logoff\n";
+        serverOut.write(cmd.getBytes());
     }
 
     // executes readMessageLoop after login
