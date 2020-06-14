@@ -1,5 +1,7 @@
 package com.tm;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -80,6 +82,15 @@ public class ManagerClient {
         try {
             String line;
             while ((line = bufferedIn.readLine()) != null) {
+                String[] tokens = StringUtils.split(line);
+                if (tokens !=null && tokens.length > 0) {
+                    String cmd = tokens[0];
+                    if ("online".equalsIgnoreCase(cmd)) {
+                        handleOnline(tokens);
+                    } else if ("offline".equalsIgnoreCase(cmd)) {
+                        handleOffline(tokens);
+                    }
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -88,6 +99,20 @@ public class ManagerClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        }
+    }
+
+    private void handleOffline(String[] tokens) {
+        String login = tokens[1];
+        for(UserStatusListener listener : userStatusListeners) {
+            listener.offline(login);
+        }
+    }
+
+    private void handleOnline(String[] tokens) {
+        String login = tokens[1];
+        for(UserStatusListener listener : userStatusListeners) {
+            listener.online(login);
         }
     }
 
