@@ -2,6 +2,7 @@ package com.tm;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ManagerClient {
     private final String serverName;
@@ -11,6 +12,9 @@ public class ManagerClient {
     private InputStream serverIn;
     // used to get server response
     private BufferedReader bufferedIn;
+
+    // register multiple user listeners to client (list of listeners)
+    private ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
 
     public ManagerClient(String serverName, int serverPort) {
         this.serverName = serverName;
@@ -60,5 +64,12 @@ public class ManagerClient {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void addUserStatusListener(UserStatusListener listener) {
+        userStatusListeners.add(listener);
+    }
+    public void removeUserStatusListener(UserStatusListener listener) {
+        userStatusListeners.remove(listener);
     }
 }
