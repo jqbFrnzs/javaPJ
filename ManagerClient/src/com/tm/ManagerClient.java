@@ -56,11 +56,39 @@ public class ManagerClient {
 
         // if server response is correct the function returns true
         if ("ok, logging you in...".equalsIgnoreCase(response)) {
+            startMessageReader();
             return true;
         } else {
             return false;
         }
 
+    }
+
+    // executes readMessageLoop after login
+    private void startMessageReader() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                readMessageLoop();
+            }
+        };
+        t.start();
+    }
+
+    // reads line by line from server output (our client input)
+    private void readMessageLoop() {
+        try {
+            String line;
+            while ((line = bufferedIn.readLine()) != null) {
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        }
     }
 
     private boolean connect() {
