@@ -41,12 +41,20 @@ public class ManagerClient {
             System.out.println("connection successful");
             if (client.login("guest", "guest")) {
                 System.out.println("Login successful");
+
+                client.msg("jqb", "Hello");
+
             } else {
                 System.err.println("Login failed");
            }
 
             client.logoff();
         }
+    }
+
+    private void msg(String sendTo, String msgBody) throws IOException {
+        String cmd = "msg " + sendTo + " " + msgBody + "\n";
+        serverOut.write(cmd.getBytes());
     }
 
     private boolean login(String login, String password) throws IOException {
