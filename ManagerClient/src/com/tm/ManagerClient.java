@@ -23,6 +23,17 @@ public class ManagerClient {
 
     public static void main(String[] args) throws IOException {
         ManagerClient client = new ManagerClient("localhost", 8818);
+        client.addUserStatusListener(new UserStatusListener() {
+            @Override
+            public void online(String login) {
+                System.out.println("ONLINE: " + login);
+            }
+
+            @Override
+            public void offline(String login) {
+                System.out.println("OFFLINE: " + login);
+            }
+        });
         if(!client.connect()) {
             System.err.println("Connection failed");
         } else {
