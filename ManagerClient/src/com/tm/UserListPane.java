@@ -9,11 +9,13 @@ public class UserListPane extends JPanel implements UserStatusListener {
 
     // show list of users
     private JList<String> userListUI;
+    private DefaultListModel<String> userListModel;
 
     public UserListPane(ManagerClient client) {
         this.client = client;
         this.client.addUserStatusListener(this);
 
+        userListModel = new DefaultListModel<>();
         userListUI = new JList<>();
         setLayout(new BorderLayout());
         add(new JScrollPane(userListUI), BorderLayout.CENTER);
@@ -33,11 +35,11 @@ public class UserListPane extends JPanel implements UserStatusListener {
 
     @Override
     public void online(String login) {
-
+        userListModel.addElement(login);
     }
 
     @Override
     public void offline(String login) {
-
+        userListModel.removeElement(login);
     }
 }
