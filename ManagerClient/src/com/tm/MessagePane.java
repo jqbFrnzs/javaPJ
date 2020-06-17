@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MessagePane extends JPanel {
+public class MessagePane extends JPanel implements MessageListener {
 
     private final ManagerClient client;
     private final String login;
@@ -19,6 +19,8 @@ public class MessagePane extends JPanel {
         this.client = client;
         this.login = login;
 
+        client.addMessageListener(this);
+
         setLayout(new BorderLayout());
         add(new JScrollPane(messageList), BorderLayout.CENTER);
         add(inputField, BorderLayout.SOUTH);
@@ -29,7 +31,7 @@ public class MessagePane extends JPanel {
                 try {
                     String text = inputField.getText();
                     client.msg(login, text);
-                    listModel.addElement(text);
+                    listModel.addElement("You: " + text);
                     inputField.setText("");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -37,5 +39,11 @@ public class MessagePane extends JPanel {
             }
         });
 
+    }
+
+    @Override
+    public void onMessage(String fromLogin, String msgBody) {
+        String line = fromLogin + ": " + msgBody;
+        listModel.addElement(line);
     }
 }
