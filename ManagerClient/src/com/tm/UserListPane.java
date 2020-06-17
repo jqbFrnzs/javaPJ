@@ -2,6 +2,9 @@ package com.tm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class UserListPane extends JPanel implements UserStatusListener {
 
@@ -19,6 +22,16 @@ public class UserListPane extends JPanel implements UserStatusListener {
         userListUI = new JList<>();
         setLayout(new BorderLayout());
         add(new JScrollPane(userListUI), BorderLayout.CENTER);
+
+        userListUI.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() > 1) {
+                    String login = userListUI.getSelectedValue();
+                    MessagePane messagePane = new MessagePane(client, login);
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -31,13 +44,23 @@ public class UserListPane extends JPanel implements UserStatusListener {
 
         frame.getContentPane().add(userListPane, BorderLayout.CENTER);
         frame.setVisible(true);
+
+        if (client.connect()) {
+            try {
+                client.login("guest", "guest");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    // add user to the model
     @Override
     public void online(String login) {
         userListModel.addElement(login);
     }
 
+    // removes user from the model
     @Override
     public void offline(String login) {
         userListModel.removeElement(login);

@@ -74,7 +74,7 @@ public class ManagerClient {
 
         // prints out response of the server to the client
         String response = bufferedIn.readLine();
-        System.out.println(response);
+        System.out.println("Response: " + response);
 
         // if server response is correct the function returns true
         if ("ok, logging you in...".equalsIgnoreCase(response)) {
@@ -121,11 +121,11 @@ public class ManagerClient {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
