@@ -27,7 +27,10 @@ public class MessagePane extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    client.msg(login, inputField.getText());
+                    String text = inputField.getText();
+                    client.msg(login, text);
+                    listModel.addElement(text);
+                    inputField.setText("");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
