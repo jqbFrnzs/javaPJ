@@ -5,6 +5,11 @@
 ### Idea :bulb: :
 - simplistic GUI application to chat via text messages with multiple users
 - login/password 
-- additional CLI (command line interface) 
+- additional CLI (command line interface)
+
+### OOP features :pushpin: :
+- inheritance
+- polymorphism
+- encapsulation
 
 
