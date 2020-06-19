@@ -2,6 +2,7 @@ package com.tm;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -19,19 +20,28 @@ public class ServerWorker extends Thread{
         this.server = server;
         this.clientSocket = clientSocket;
     }
-
     @Override
     public void run() {
         try {
             handleClientSocket();
-        } catch (IOException | InterruptedException e) {
-            if (e.getMessage().equalsIgnoreCase("Connection reset")) {
-                System.out.println("Client disconnected, waiting for another connection . . .");
-            } else {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
+//    @Override
+//    public void run() {
+//        try {
+//            handleClientSocket();
+//        } catch (IOException | InterruptedException e) {
+//            if (e.getMessage().equalsIgnoreCase("Connection reset")) {
+//                System.out.println("Client disconnected, waiting for another connection . . .");
+//            } else {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
     private void handleClientSocket() throws IOException, InterruptedException {
         InputStream inputStream = clientSocket.getInputStream();
         this.outputStream = clientSocket.getOutputStream();
@@ -40,7 +50,7 @@ public class ServerWorker extends Thread{
         String line;
         while ( (line = reader.readLine()) != null) {
             String[] tokens = StringUtils.split(line);
-            if (tokens !=null && tokens.length > 0) {
+            if (tokens != null && tokens.length > 0) {
                 String cmd = tokens[0];
                 if ("logoff".equals(cmd) || "quit".equalsIgnoreCase(cmd)) {
                     handleLogoff();
@@ -133,7 +143,7 @@ public class ServerWorker extends Thread{
             String login = tokens[1];
             String password = tokens[2];
 
-            if(login.equals("guest") && password.equals("guest") || (login.equals("jqb") && password.equals("jqb"))) {
+            if((login.equals("guest") && password.equals("guest")) || ((login.equals("jqb") && password.equals("jqb")))) {
                 String msg = "ok, logging you in...\n";
                 outputStream.write(msg.getBytes());
                 this.login = login;
@@ -170,7 +180,11 @@ public class ServerWorker extends Thread{
     private void send(String msg) throws IOException {
         if (login != null) {
             // do not send ONLINE message if clientSocket is opened but user not connected
-            outputStream.write(msg.getBytes());
+            try {
+                outputStream.write(msg.getBytes());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

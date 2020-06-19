@@ -46,15 +46,17 @@ public class LoginWindow extends JFrame {
 
         try {
             if (client.login(login, password)) {
-                // close login window
-                setVisible(false);
                 // bring up the user list window
                 UserListPane userListPane = new UserListPane(client);
                 JFrame frame = new JFrame("User List");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(400, 600);
+
                 frame.getContentPane().add(userListPane, BorderLayout.CENTER);
                 frame.setVisible(true);
+
+                // close login window
+                setVisible(false);
             } else {
                 // show error message
                 JOptionPane.showMessageDialog(this, "Invalid login/password.");

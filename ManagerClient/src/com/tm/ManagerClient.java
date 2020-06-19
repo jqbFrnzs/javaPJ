@@ -89,7 +89,6 @@ public class ManagerClient {
         String cmd = "logoff\n";
         serverOut.write(cmd.getBytes());
     }
-
     // executes readMessageLoop after login
     public void startMessageReader() {
         Thread t = new Thread() {
@@ -107,7 +106,7 @@ public class ManagerClient {
             String line;
             while ((line = bufferedIn.readLine()) != null) {
                 String[] tokens = StringUtils.split(line);
-                if (tokens !=null && tokens.length > 0) {
+                if (tokens != null && tokens.length > 0) {
                     String cmd = tokens[0];
                     if ("online".equalsIgnoreCase(cmd)) {
                         handleOnline(tokens);
@@ -115,7 +114,7 @@ public class ManagerClient {
                         handleOffline(tokens);
                     } else if ("msg".equalsIgnoreCase(cmd)) {
                         String[] tokensMsg = StringUtils.split(line, null, 3);
-                        handleMessage(tokens);
+                        handleMessage(tokensMsg);
                     }
                 }
             }
