@@ -33,8 +33,8 @@ public class MessagePane extends JPanel implements MessageListener {
                     client.msg(login, text);
                     listModel.addElement("You: " + text);
                     inputField.setText("");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             }
         });

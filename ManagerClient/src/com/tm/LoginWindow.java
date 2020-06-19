@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+
 public class LoginWindow extends JFrame {
     private final ManagerClient client;
     JTextField loginField = new JTextField();

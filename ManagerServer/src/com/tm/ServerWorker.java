@@ -1,12 +1,15 @@
 package com.tm;
 
+import ch.qos.logback.classic.Logger;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+
 
 public class ServerWorker extends Thread{
 
@@ -20,6 +23,7 @@ public class ServerWorker extends Thread{
         this.server = server;
         this.clientSocket = clientSocket;
     }
+
     @Override
     public void run() {
         try {
@@ -107,12 +111,12 @@ public class ServerWorker extends Thread{
             // sends broadcast message if user is member of certain #topic
             if (isTopic) {
                 if(worker.isMemberOfTopic(sendTo)) {
-                    String outMsg = "/msg/ FROM " + sendTo + " , " + login + " : " + body + "\n";
+                    String outMsg = "msg " + sendTo + ":" + login + " " + body + "\n";
                     worker.send(outMsg);
                 }
             } else {
                 if (sendTo.equalsIgnoreCase(worker.getLogin())) {
-                    String outMsg = "/msg/ FROM " + login + " : " + body + "\n";
+                    String outMsg = "msg " + login + " " + body + "\n";
                     worker.send(outMsg);
                 }
             }
@@ -123,8 +127,8 @@ public class ServerWorker extends Thread{
         server.removeWorker(this);
         List<ServerWorker> workerList = server.getWorkerList();
 
-        String onlineMsg = login + " is now offline!\n";
         // send other online users current user's status
+        String onlineMsg = "offline " + login + "\n";
         for(ServerWorker worker : workerList) {
             // do not send ONLINE message to oneself
             if (!login.equals(worker.getLogin())) {
@@ -144,10 +148,10 @@ public class ServerWorker extends Thread{
             String password = tokens[2];
 
             if((login.equals("guest") && password.equals("guest")) || ((login.equals("jqb") && password.equals("jqb")))) {
-                String msg = "ok, logging you in...\n";
+                String msg = "ok login\n";
                 outputStream.write(msg.getBytes());
                 this.login = login;
-                System.out.println(login + " logged in just now!");
+                System.out.println("User logged in succesfully: " + login);
 
                 List<ServerWorker> workerList = server.getWorkerList();
                 // send current user all other online logins
@@ -155,13 +159,13 @@ public class ServerWorker extends Thread{
                     // do not send ONLINE message when clientSocket is not logged in
                     if (worker.getLogin() != null) {
                         if (!login.equals(worker.getLogin())) {
-                            String onlineBefore = worker.getLogin() + " is now online!\n";
-                            send(onlineBefore);
+                            String msg2 = "online " + worker.getLogin() + "\n";
+                            send(msg2);
                         }
                     }
                 }
 
-                String onlineMsg = login + " is now online!\n";
+                String onlineMsg = "online " + login + "\n";
                 // send other online users current user's status
                 for(ServerWorker worker : workerList) {
                     // do not send ONLINE message to oneself
@@ -170,9 +174,9 @@ public class ServerWorker extends Thread{
                     }
                 }
             } else {
-                String msg = "error, cannot log you in...\n";
+                String msg = "error login\n";
                 outputStream.write(msg.getBytes());
-                System.err.println("Cannot log in " + login);
+                System.err.println("Login failed for " + login);
             }
         }
     }

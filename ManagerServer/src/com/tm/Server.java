@@ -26,7 +26,7 @@ public class Server extends Thread{
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort);
-            while (true) {
+            while(true) {
                 System.out.println("Going to accept client connection just now");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Accepted connection from " + clientSocket);

@@ -42,7 +42,7 @@ public class ManagerClient {
 
             @Override
             public void onMessage(String fromLogin, String msgBody) {
-                System.out.println("You got a message from " + fromLogin + " ==> " + msgBody + "\n");
+                System.out.println("You got a message from " + fromLogin + " ==> " + msgBody);
             }
         });
 
@@ -50,6 +50,7 @@ public class ManagerClient {
             System.err.println("Connection failed");
         } else {
             System.out.println("connection successful");
+
             if (client.login("guest", "guest")) {
                 System.out.println("Login successful");
 
@@ -74,10 +75,10 @@ public class ManagerClient {
 
         // prints out response of the server to the client
         String response = bufferedIn.readLine();
-        System.out.println("Response: " + response);
+        System.out.println("Response Line:" + response);
 
         // if server response is correct the function returns true
-        if ("ok, logging you in...".equalsIgnoreCase(response)) {
+        if ("ok login".equalsIgnoreCase(response)) {
             startMessageReader();
             return true;
         } else {
