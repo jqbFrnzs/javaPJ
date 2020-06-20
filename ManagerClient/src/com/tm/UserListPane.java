@@ -41,7 +41,7 @@ public class UserListPane extends JPanel implements UserStatusListener {
     }
 
     public static void main(String[] args) {
-        ManagerClient client = new ManagerClient("localhost", 8819);
+        ManagerClient client = new ManagerClient("localhost", Constants.port);
 
         UserListPane userListPane = new UserListPane(client);
         JFrame frame = new JFrame("User List");

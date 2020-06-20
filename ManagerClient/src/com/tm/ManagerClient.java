@@ -26,7 +26,7 @@ public class ManagerClient {
     }
 
     public static void main(String[] args) throws IOException {
-        ManagerClient client = new ManagerClient("localhost", 8819);
+        ManagerClient client = new ManagerClient("localhost", Constants.port);
         client.addUserStatusListener(new UserStatusListener() {
             @Override
             public void online(String login) {

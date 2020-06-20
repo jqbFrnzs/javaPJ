@@ -16,7 +16,7 @@ public class LoginWindow extends JFrame {
     public LoginWindow() {
         super("Login");
 
-        this.client = new ManagerClient("localhost", 8819);
+        this.client = new ManagerClient("localhost", Constants.port);
         client.connect();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
