@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MessagePane extends JPanel implements MessageListener {
+public class MessagePane extends JPanel  implements MessageListener {
 
     private final ManagerClient client;
     private final String login;

@@ -47,6 +47,7 @@ public class UserListPane extends JPanel implements UserStatusListener {
         JFrame frame = new JFrame("User List");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 600);
+        frame.setLocationRelativeTo(null);
 
         frame.getContentPane().add(userListPane, BorderLayout.CENTER);
         frame.setVisible(true);
