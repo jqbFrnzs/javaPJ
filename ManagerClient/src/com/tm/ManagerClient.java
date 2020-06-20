@@ -75,7 +75,7 @@ public class ManagerClient {
 
         // prints out response of the server to the client
         String response = bufferedIn.readLine();
-        System.out.println("Response Line:" + response);
+        System.out.println("Response Line: " + response);
 
         // if server response is correct the function returns true
         if ("ok login".equalsIgnoreCase(response)) {

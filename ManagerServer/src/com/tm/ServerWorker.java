@@ -28,24 +28,14 @@ public class ServerWorker extends Thread{
     public void run() {
         try {
             handleClientSocket();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (IOException | InterruptedException e) {
+            if (e.getMessage().equalsIgnoreCase("Connection reset")) {
+                System.out.println("Client disconnected, waiting for another connection . . .");
+            } else {
+                e.printStackTrace();
+            }
         }
     }
-//    @Override
-//    public void run() {
-//        try {
-//            handleClientSocket();
-//        } catch (IOException | InterruptedException e) {
-//            if (e.getMessage().equalsIgnoreCase("Connection reset")) {
-//                System.out.println("Client disconnected, waiting for another connection . . .");
-//            } else {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
     private void handleClientSocket() throws IOException, InterruptedException {
         InputStream inputStream = clientSocket.getInputStream();
         this.outputStream = clientSocket.getOutputStream();
