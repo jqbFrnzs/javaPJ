@@ -50,17 +50,11 @@ public class ManagerClient {
             System.err.println("Connection failed");
         } else {
             System.out.println("connection successful");
-
             if (client.login("guest", "guest")) {
                 System.out.println("Login successful");
-
-                client.msg("jqb", "Hello");
-
             } else {
                 System.err.println("Login failed");
            }
-
-//            client.logoff();
         }
     }
 

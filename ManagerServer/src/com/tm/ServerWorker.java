@@ -136,8 +136,8 @@ public class ServerWorker extends Thread{
         if (tokens.length == 3) {
             String login = tokens[1];
             String password = tokens[2];
-
-            if((login.equals("guest") && password.equals("guest")) || ((login.equals("jqb") && password.equals("jqb")))
+            if((login.equals("guest") && password.equals("guest")) ||
+                    ((login.equals("jqb") && password.equals("jqb")))
                     || ((login.equals("adam") && password.equals("adam"))) ||
                     ((login.equals("tomek") && password.equals("tomek")))) {
                 String msg = "ok login\n";
@@ -156,7 +156,6 @@ public class ServerWorker extends Thread{
                         }
                     }
                 }
-
                 String onlineMsg = "online " + login + "\n";
                 // send other online users current user's status
                 for(ServerWorker worker : workerList) {
